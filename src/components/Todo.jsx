@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import  "../styles/Style.css"
+import "../styles/Style.css";
 
 const Todo = () => {
   const [input, setInput] = useState("");
@@ -7,28 +7,26 @@ const Todo = () => {
 
   const handleChange = (e) => {
     setInput(e.target.value);
-    console.log(input);
   };
+
   const handleAdd = () => {
-    let newobj = {
+    if (input.trim() === "") return;
+
+    const newTodo = {
       todo: input,
-      id: Date.now() + Math.random + input,
+      id: Date.now() + Math.random(),
       status: false,
     };
 
-    let todosAfterAdding = [...todos, newobj];
-
-    setTodos(todosAfterAdding);
-
+    setTodos([...todos, newTodo]);
     setInput("");
   };
 
   const handleDelete = (id) => {
-    let todosAfterDeleting = todos.filter((todo) =>
-      todo.id === id ? !todo : todo
-    );
-    setTodos(todosAfterDeleting);
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
   };
+
   return (
     <div className="main">
       <h3>To-do list</h3>
@@ -38,12 +36,12 @@ const Todo = () => {
       </div>
       <div>
         {todos.map((todo) => (
-          <>
+          <div key={todo.id} className="todo-item">
             <ul>
-              <li key={todo.id}>{todo.title}</li>
+              <li>{todo.todo}</li>
             </ul>
-            <button onClick={handleDelete}>Delete</button>
-          </>
+            <button onClick={() => handleDelete(todo.id)}>Delete</button>
+          </div>
         ))}
       </div>
     </div>
